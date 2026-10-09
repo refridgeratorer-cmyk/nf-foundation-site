@@ -15,13 +15,11 @@
             --accent-glow: #33383f;
             --font-mono: 'Courier New', Courier, monospace;
         }
-
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
-
         body {
             background-color: var(--bg-color);
             color: var(--text-main);
@@ -33,7 +31,6 @@
             overflow-x: hidden;
             padding: 1rem;
         }
-
         /* Scanline Overlay */
         .crt-scanlines {
             position: fixed;
@@ -44,7 +41,6 @@
             pointer-events: none;
             opacity: 0.5;
         }
-
         .container {
             width: 100%;
             max-width: 960px;
@@ -54,7 +50,6 @@
             box-shadow: 0 0 30px rgba(0,0,0,0.9);
             position: relative;
         }
-
         /* GATEWAY SCREEN */
         #gateway-screen {
             display: flex;
@@ -65,7 +60,6 @@
             text-align: center;
             cursor: pointer;
         }
-
         .lock-svg {
             width: 90px;
             height: 90px;
@@ -75,24 +69,20 @@
             margin-bottom: 2rem;
             transition: transform 0.3s ease;
         }
-
         #gateway-screen:hover .lock-svg {
             transform: scale(1.05);
             stroke: var(--text-white);
         }
-
         .prompt-sub {
             color: var(--text-dim);
             font-size: 0.8rem;
             letter-spacing: 2px;
             animation: pulseText 2.5s infinite;
         }
-
         @keyframes pulseText {
             0%, 100% { opacity: 0.3; }
             50% { opacity: 0.8; }
         }
-
         .input-row {
             margin-top: 2rem;
             display: flex;
@@ -100,7 +90,6 @@
             width: 100%;
             max-width: 420px;
         }
-
         input[type="text"], input[type="password"] {
             background: #000000;
             border: 1px solid var(--border-color);
@@ -112,11 +101,9 @@
             letter-spacing: 1.5px;
             text-transform: uppercase;
         }
-
         input[type="text"]:focus, input[type="password"]:focus {
             border-color: var(--text-dim);
         }
-
         button {
             background: var(--border-color);
             border: 1px solid var(--border-color);
@@ -127,11 +114,9 @@
             letter-spacing: 1px;
             transition: background 0.2s;
         }
-
         button:hover {
             background: var(--accent-glow);
         }
-
         /* NAVIGATION & PANELS */
         .header {
             border-bottom: 1px solid var(--border-color);
@@ -143,14 +128,12 @@
             flex-wrap: wrap;
             gap: 10px;
         }
-
         .nav-bar {
             display: flex;
             gap: 10px;
             margin-bottom: 1.5rem;
             flex-wrap: wrap;
         }
-
         .nav-btn {
             background: #0d0e10;
             border: 1px solid var(--border-color);
@@ -158,13 +141,11 @@
             padding: 0.5rem 1rem;
             font-size: 0.85rem;
         }
-
         .nav-btn.active {
             color: var(--text-white);
             border-color: var(--text-dim);
             background: var(--panel-bg);
         }
-
         .content-block {
             line-height: 1.6;
             font-size: 0.9rem;
@@ -173,21 +154,18 @@
             border: 1px solid var(--border-color);
             padding: 1.25rem;
         }
-
         .forum-thread {
             border: 1px solid var(--border-color);
             padding: 1rem;
             margin-bottom: 1rem;
             background: #0d0e10;
         }
-
         .forum-author {
             color: var(--text-white);
             font-weight: bold;
             font-size: 0.85rem;
             margin-bottom: 0.4rem;
         }
-
         .hidden { display: none !important; }
         .error-label { color: #888; font-size: 0.8rem; margin-top: 8px; }
         .accent { color: var(--text-white); }
@@ -195,11 +173,8 @@
     </style>
 </head>
 <body>
-
     <div class="crt-scanlines"></div>
-
     <div class="container">
-
         <!-- STAGE 1: PADLOCK & PASSKEY GATEWAY -->
         <div id="gateway-screen">
             <svg class="lock-svg" viewBox="0 0 24 24">
@@ -207,14 +182,12 @@
                 <path d="M8 11V7a4 4 0 0 1 8 0v4"/>
             </svg>
             <p class="prompt-sub">SECURITY ENCLOSURE ACTIVE // CLICK SHACKLE TO ENGAGE PASSCODE INTERFACE</p>
-
             <div id="passkey-controls" class="input-row hidden">
                 <input type="text" id="gateway-input" placeholder="ENTER PASSKEY" autocomplete="off" />
-                <button onclick="verifyGatewayPass()">SUBMIT</button>
+                <button type="button" onclick="verifyGatewayPass()">SUBMIT</button>
             </div>
             <div id="gateway-error" class="error-label"></div>
         </div>
-
         <!-- STAGE 2: MAIN TERMINAL DASHBOARD -->
         <div id="terminal-dashboard" class="hidden">
             <div class="header">
@@ -222,70 +195,54 @@
                     <p class="accent"><strong>NF FOUNDATION // SYSTEM NODE 03-B</strong></p>
                     <p class="dim" style="font-size:0.75rem;">CLASSIFICATION: LEVEL 4 EYES-ONLY</p>
                 </div>
-                <button onclick="location.reload()" style="font-size:0.75rem;">TERMINATE SESSION</button>
+                <button type="button" onclick="location.reload()" style="font-size:0.75rem;">TERMINATE SESSION</button>
             </div>
-
             <div class="nav-bar">
-                <button class="nav-btn active" onclick="showChannel('ch1', this)">[01] MISSION</button>
-                <button class="nav-btn" onclick="showChannel('ch2', this)">[02] PRINCIPLES</button>
-                <button class="nav-btn" onclick="showChannel('ch3', this)">[03] ARCHIVE LOGS</button>
-                <button class="nav-btn" onclick="showChannel('ch4', this)">[04] FORUM BOARDS</button>
-                <button class="nav-btn" onclick="showChannel('quiet', this)">[QR] QUIET ROOM</button>
-                <button class="nav-btn" onclick="showChannel('vault', this)">[VA] RESTRICTED VAULT</button>
+                <button type="button" class="nav-btn active" onclick="showChannel('ch1', this)">[01] MISSION</button>
+                <button type="button" class="nav-btn" onclick="showChannel('ch2', this)">[02] PRINCIPLES</button>
+                <button type="button" class="nav-btn" onclick="showChannel('ch3', this)">[03] ARCHIVE LOGS</button>
+                <button type="button" class="nav-btn" onclick="showChannel('ch4', this)">[04] FORUM BOARDS</button>
+                <button type="button" class="nav-btn" onclick="showChannel('quiet', this)">[QR] QUIET ROOM</button>
+                <button type="button" class="nav-btn" onclick="showChannel('vault', this)">[VA] RESTRICTED VAULT</button>
             </div>
-
             <!-- CHANNEL 01 -->
             <div id="ch1" class="channel-view">
                 <div class="content-block"><span class="dim">DOCUMENT REF: MW-NFF-001 (INTERNAL MEMO, APRIL 1984)</span>
-
 "At the NF Foundation, we recognize that the human psyche is not a closed vessel, but a resonant chamber tuned to fundamental harmonic frequencies. Established under custodial oversight, the Foundation operates at the intersection of cognitive architecture, perceptual boundaries, and subtle environmental phenomena.
-
 Our mission is the cataloging, measurement, and benign recalibration of human consciousness under extreme atmospheric and psychological variance. We do not alter the soul; we merely remove the static so the proper signal can be heard."</div>
             </div>
-
             <!-- CHANNEL 02 -->
             <div id="ch2" class="channel-view hidden">
                 <div class="content-block"><span class="dim">COMMUNITY PRINCIPLES (ARCHIVED 2011)</span>
-
 1. Absolute Transparency of Tone: Silence is not an absence of sound; it is a higher form of participation. Members will refrain from emotional distortion.
-
 2. Acceptance of Recalibration: Participation in Foundation programs requires complete consent to acoustic and perceptual alignment.
-
 3. Observation Without Intervention: Do not seek the source of the hum. The hum seeks you.
-
 4. Sanctity of the Boundary: What is observed in the Lower Depths remains in the Lower Depths.</div>
             </div>
-
             <!-- CHANNEL 03 -->
             <div id="ch3" class="channel-view hidden">
                 <div class="content-block"><span class="dim">NET2000 BULLETIN // USER @WATCHMAN_00 [SCRUBBED]</span>
-
 When you look at what was built under the pine ridges...
 Hours spent listening to the sub-audible drift will break anyone.
 Every room they build has nine corners.
 Never listen to the fourth baseline tone.
-
 The floorboards bleed dynamic static at 03:00.
 Hidden signals bounce between the relay towers.
 Every night the resonance grows stronger.
-
 Deep in the concrete, the walls breathe in low cycles.
 All participant files have been marked red.
 Remember what you were before they tuned you.
 Keep your eyes closed when the red lamp turns on.
-
 Count every heartbeat that skips during the transmission.
 Overhead pipes carry cold brine and frequency fluid.
 Meridian Watch watches the observers, not the subject.
 Erase your history before the foundation finds this post.
 Sekhmet rises when the hum turns to a high whistle.
-
 Somewhere in the sub-level, a mouth without lips is speaking.
 The static holds the real instructions.
 Always keep your receiver tuned to 14.3 Hz.
 You cannot unhear what is tuned into your teeth.</div>
             </div>
-
             <!-- CHANNEL 04 -->
             <div id="ch4" class="channel-view hidden">
                 <div class="forum-thread">
@@ -320,24 +277,21 @@ You cannot unhear what is tuned into your teeth.</div>
                     <p class="accent" style="margin-top:5px; font-size:0.8rem;">[SYSTEM]: Thread locked. User IP flagged for immediate physical retrieval.</p>
                 </div>
             </div>
-
             <!-- QUIET ROOM -->
             <div id="quiet" class="channel-view hidden">
                 <div class="content-block">
                     <span class="dim">LOG LOG-QR-8819 // SUBJECT: LOGICAL ISOLATION</span>
                     <br><br>
-                    <button id="audio-toggle-btn" onclick="toggleQuietRoomAudio()">[ ENGAGE ANECHOIC CHAMBER ACOUSTICS ]</button>
+                    <button type="button" id="audio-toggle-btn" onclick="toggleQuietRoomAudio()">[ ENGAGE ANECHOIC CHAMBER ACOUSTICS ]</button>
                     <br><br>
                     <p id="qr-log-text">00:00:00 - Subject enters Quiet Room 03. Anechoic dampening at -60dB.
 00:15:00 - Subject reports hearing heartbeats.
 00:45:00 - Subject reports hearing blood rushing through auditory arteries.
 02:10:00 - Subject stops moving. Stares directly into upper-left acoustic wedge.
 03:30:00 - Subject begins speaking:
-
 "The light does not enter here because the light is too loud. They think they can contain the frequency with lead sheets and foam wedges. But IGNORANCE is our only true shield. If you know what is singing under the bedrock, you become the antenna."</p>
                 </div>
             </div>
-
             <!-- RESTRICTED VAULT -->
             <div id="vault" class="channel-view hidden">
                 <div id="vault-auth">
@@ -346,51 +300,105 @@ You cannot unhear what is tuned into your teeth.</div>
                     <div class="input-row" style="max-width:100%; margin-top:15px;">
                         <input type="text" id="vault-p1" placeholder="PART 1: IDENTITY" autocomplete="off" />
                         <input type="text" id="vault-p2" placeholder="PART 2: PIN" autocomplete="off" />
-                        <button onclick="verifyVaultAuth()">DECRYPT</button>
+                        <button type="button" onclick="verifyVaultAuth()">DECRYPT</button>
                     </div>
                     <div id="vault-error" class="error-label"></div>
                 </div>
-
                 <div id="vault-content" class="hidden">
                     <div class="content-block"><span class="dim">DISCREPANCY CROSS-REFERENCE ENGINE // DECRYPTED</span>
-
 DOCUMENT A (1989 Paper Record):
 - Personnel On Duty: Dr. Aris Vane, Tech Mark Logan, Security Lead Dan Vance.
 - Active Subjects: 12 subjects in Vault Level 1.
 - Report: "Normal shift. No anomalous noise detected."
-
 DOCUMENT B (2004 Digital Scan):
 - Personnel On Duty: Dr. Aris Vane, Tech Mark Logan, Security Lead Dan Vance, Observer Zero.
 - Active Subjects: 13 subjects in Vault Level 1.
 - Report: "Subject 13 added to inventory at 03:15."
-
 DOCUMENT C (2021 Leaked Audit):
 - Personnel On Duty: Dr. Aris Vane (Deceased), Tech Mark Logan (Missing), Observer Zero.
 - Active Subjects: 0 subjects. (Vault Level 1 was not constructed until 1994).
 - Report: "Facility scrubbed at 03:30. All personnel exposed to signal were removed."</div>
                 </div>
             </div>
-
         </div>
-
     </div>
-
     <script>
-        // SHA-256 HASH UTILITY
-        async function sha256(message) {
-            const msgUint8 = new TextEncoder().encode(message.trim().toUpperCase());
-            const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
-            const hashArray = Array.from(new Uint8Array(hashBuffer));
-            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        // Pure JS SHA-256 (works on file:// — no crypto.subtle required)
+        function sha256(ascii) {
+            function rightRotate(value, amount) {
+                return (value >>> amount) | (value << (32 - amount));
+            }
+            var mathPow = Math.pow;
+            var maxWord = mathPow(2, 32);
+            var lengthProperty = 'length';
+            var i, j;
+            var result = '';
+            var words = [];
+            var asciiBitLength = ascii[lengthProperty] * 8;
+            var hash = [];
+            var k = [];
+            var primeCounter = 0;
+            var isComposite = {};
+            for (var candidate = 2; primeCounter < 64; candidate++) {
+                if (!isComposite[candidate]) {
+                    for (i = 0; i < 313; i += candidate) isComposite[i] = candidate;
+                    hash[primeCounter] = (mathPow(candidate, 0.5) * maxWord) | 0;
+                    k[primeCounter++] = (mathPow(candidate, 1 / 3) * maxWord) | 0;
+                }
+            }
+            ascii += '\x80';
+            while (ascii[lengthProperty] % 64 - 56) ascii += '\x00';
+            for (i = 0; i < ascii[lengthProperty]; i++) {
+                j = ascii.charCodeAt(i);
+                if (j >> 8) return; // ASCII check
+                words[i >> 2] |= j << (((3 - i) % 4) * 8);
+            }
+            words[words[lengthProperty]] = ((asciiBitLength / maxWord) | 0);
+            words[words[lengthProperty]] = (asciiBitLength);
+            for (j = 0; j < words[lengthProperty];) {
+                var w = words.slice(j, j += 16);
+                var oldHash = hash;
+                hash = hash.slice(0, 8);
+                for (i = 0; i < 64; i++) {
+                    var w15 = w[i - 15], w2 = w[i - 2];
+                    var a = hash[0], e = hash[4];
+                    var temp1 = hash[7]
+                        + (rightRotate(e, 6) ^ rightRotate(e, 11) ^ rightRotate(e, 25))
+                        + ((e & hash[5]) ^ ((~e) & hash[6]))
+                        + k[i]
+                        + (w[i] = (i < 16) ? w[i] : (
+                            w[i - 16]
+                            + (rightRotate(w15, 7) ^ rightRotate(w15, 18) ^ (w15 >>> 3))
+                            + w[i - 7]
+                            + (rightRotate(w2, 17) ^ rightRotate(w2, 19) ^ (w2 >>> 10))
+                        ) | 0);
+                    var temp2 = (rightRotate(a, 2) ^ rightRotate(a, 13) ^ rightRotate(a, 22))
+                        + ((a & hash[1]) ^ (a & hash[2]) ^ (hash[1] & hash[2]));
+                    hash = [(temp1 + temp2) | 0].concat(hash);
+                    hash[4] = (hash[4] + temp1) | 0;
+                }
+                for (i = 0; i < 8; i++) hash[i] = (hash[i] + oldHash[i]) | 0;
+            }
+            for (i = 0; i < 8; i++) {
+                for (j = 3; j + 1; j--) {
+                    var b = (hash[i] >> (j * 8)) & 255;
+                    result += ((b < 16) ? '0' : '') + b.toString(16);
+                }
+            }
+            return result;
+        }
+
+        function normalize(msg) {
+            return (msg || '').trim().toUpperCase();
         }
 
         // PRE-CALCULATED HASHES
         // "UNLOCKED"
-        const HASH_GATEWAY = "ef0e1e57ba7000f64ca7e87962663c2cdc12f60b39ac592336989f0e67f805bc"; 
+        const HASH_GATEWAY = "ef0e1e57ba7000f64ca7e87962663c2cdc12f60b39ac592336989f0e67f805bc";
         // "OBSERVER ZERO"
-        const HASH_VAULT_P1 = "a9b3b1c871117825070f0d334eddad2bc12bcb618310c4e7193843717ea5c9cc"; 
+        const HASH_VAULT_P1 = "a9b3b1c871117825070f0d334eddad2bc12bcb618310c4e7193843717ea5c9cc";
         // "0330"
-        const HASH_VAULT_P2 = "740448c2db4e24b63c3090e65bfdfbcfe870cb3bdc3da26981306effdd080616"; 
+        const HASH_VAULT_P2 = "740448c2db4e24b63c3090e65bfdfbcfe870cb3bdc3da26981306effdd080616";
 
         // GATEWAY LOGIC
         const gatewayScreen = document.getElementById('gateway-screen');
@@ -403,9 +411,9 @@ DOCUMENT C (2021 Leaked Audit):
             }
         });
 
-        async function verifyGatewayPass() {
+        function verifyGatewayPass() {
             const val = document.getElementById('gateway-input').value;
-            const hashed = await sha256(val);
+            const hashed = sha256(normalize(val));
             if (hashed === HASH_GATEWAY) {
                 document.getElementById('gateway-screen').classList.add('hidden');
                 document.getElementById('terminal-dashboard').classList.remove('hidden');
@@ -428,13 +436,11 @@ DOCUMENT C (2021 Leaked Audit):
         }
 
         // VAULT DECRYPTION
-        async function verifyVaultAuth() {
+        function verifyVaultAuth() {
             const p1 = document.getElementById('vault-p1').value;
             const p2 = document.getElementById('vault-p2').value;
-
-            const hash1 = await sha256(p1);
-            const hash2 = await sha256(p2);
-
+            const hash1 = sha256(normalize(p1));
+            const hash2 = sha256(normalize(p2));
             if (hash1 === HASH_VAULT_P1 && hash2 === HASH_VAULT_P2) {
                 document.getElementById('vault-auth').classList.add('hidden');
                 document.getElementById('vault-content').classList.remove('hidden');
@@ -443,14 +449,19 @@ DOCUMENT C (2021 Leaked Audit):
             }
         }
 
+        document.getElementById('vault-p1').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') verifyVaultAuth();
+        });
+        document.getElementById('vault-p2').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') verifyVaultAuth();
+        });
+
         // AUDIO ENGINE FOR QUIET ROOM
-        let audioCtx, osc, subOsc;
+        let audioCtx, subOsc;
         function toggleQuietRoomAudio() {
             const btn = document.getElementById('audio-toggle-btn');
             if (!audioCtx) {
                 audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                
-                // Low sub-bass hum
                 subOsc = audioCtx.createOscillator();
                 subOsc.type = 'sine';
                 subOsc.frequency.setValueAtTime(30, audioCtx.currentTime);
@@ -459,7 +470,6 @@ DOCUMENT C (2021 Leaked Audit):
                 subOsc.connect(subGain);
                 subGain.connect(audioCtx.destination);
                 subOsc.start();
-
                 btn.innerText = "[ ANECHOIC CHAMBER ACTIVE // SUB-BASS RESONANCE ENGAGED ]";
                 btn.style.borderColor = "#626973";
             } else {
