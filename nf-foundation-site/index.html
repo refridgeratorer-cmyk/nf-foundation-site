@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NF FOUNDATION // INTERNAL PORTAL</title>
+    <style>
+        :root {
+            --bg-color: #08090a;
+            --panel-bg: #111315;
+            --border-color: #22262a;
+            --text-main: #c5c9d0;
+            --text-dim: #626973;
+            --text-white: #ffffff;
+            --accent-glow: #33383f;
+            --font-mono: 'Courier New', Courier, monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-mono);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            padding: 1rem;
+        }
+
+        /* Scanline Overlay */
+        .crt-scanlines {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.3) 50%);
+            background-size: 100% 4px;
+            z-index: 999;
+            pointer-events: none;
+            opacity: 0.5;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 960px;
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            padding: 2rem;
+            box-shadow: 0 0 30px rgba(0,0,0,0.9);
+            position: relative;
+        }
+
+        /* GATEWAY SCREEN */
+        #gateway-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 480px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .lock-svg {
+            width: 90px;
+            height: 90px;
+            fill: none;
+            stroke: var(--text-main);
+            stroke-width: 2;
+            margin-bottom: 2rem;
+            transition: transform 0.3s ease;
+        }
+
+        #gateway-screen:hover .lock-svg {
+            transform: scale(1.05);
+            stroke: var(--text-white);
+        }
+
+        .prompt-sub {
+            color: var(--text-dim);
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            animation: pulseText 2.5s infinite;
+        }
+
+        @keyframes pulseText {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.8; }
+        }
+
+        .input-row {
+            margin-top: 2rem;
+            display: flex;
+            gap: 8px;
+            width: 100%;
+            max-width: 420px;
+        }
+
+        input[type="text"], input[type="password"] {
+            background: #000000;
+            border: 1px solid var(--border-color);
+            color: var(--text-white);
+            font-family: var(--font-mono);
+            padding: 0.75rem 1rem;
+            flex-grow: 1;
+            outline: none;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        input[type="text"]:focus, input[type="password"]:focus {
+            border-color: var(--text-dim);
+        }
+
+        button {
+            background: var(--border-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-white);
+            font-family: var(--font-mono);
+            padding: 0.75rem 1.25rem;
+            cursor: pointer;
+            letter-spacing: 1px;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background: var(--accent-glow);
+        }
+
+        /* NAVIGATION & PANELS */
+        .header {
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .nav-bar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            background: #0d0e10;
+            border: 1px solid var(--border-color);
+            color: var(--text-dim);
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+        }
+
+        .nav-btn.active {
+            color: var(--text-white);
+            border-color: var(--text-dim);
+            background: var(--panel-bg);
+        }
+
+        .content-block {
+            line-height: 1.6;
+            font-size: 0.9rem;
+            white-space: pre-wrap;
+            background: #0a0b0d;
+            border: 1px solid var(--border-color);
+            padding: 1.25rem;
+        }
+
+        .forum-thread {
+            border: 1px solid var(--border-color);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background: #0d0e10;
+        }
+
+        .forum-author {
+            color: var(--text-white);
+            font-weight: bold;
+            font-size: 0.85rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .hidden { display: none !important; }
+        .error-label { color: #888; font-size: 0.8rem; margin-top: 8px; }
+        .accent { color: var(--text-white); }
+        .dim { color: var(--text-dim); }
+    </style>
+</head>
+<body>
+
+    <div class="crt-scanlines"></div>
+
+    <div class="container">
+
+        <!-- STAGE 1: PADLOCK & PASSKEY GATEWAY -->
+        <div id="gateway-screen">
+            <svg class="lock-svg" viewBox="0 0 24 24">
+                <rect x="5" y="11" width="14" height="10" rx="1"/>
+                <path d="M8 11V7a4 4 0 0 1 8 0v4"/>
+            </svg>
+            <p class="prompt-sub">SECURITY ENCLOSURE ACTIVE // CLICK SHACKLE TO ENGAGE PASSCODE INTERFACE</p>
+
+            <div id="passkey-controls" class="input-row hidden">
+                <input type="text" id="gateway-input" placeholder="ENTER PASSKEY" autocomplete="off" />
+                <button onclick="verifyGatewayPass()">SUBMIT</button>
+            </div>
+            <div id="gateway-error" class="error-label"></div>
+        </div>
+
+        <!-- STAGE 2: MAIN TERMINAL DASHBOARD -->
+        <div id="terminal-dashboard" class="hidden">
+            <div class="header">
+                <div>
+                    <p class="accent"><strong>NF FOUNDATION // SYSTEM NODE 03-B</strong></p>
+                    <p class="dim" style="font-size:0.75rem;">CLASSIFICATION: LEVEL 4 EYES-ONLY</p>
+                </div>
+                <button onclick="location.reload()" style="font-size:0.75rem;">TERMINATE SESSION</button>
+            </div>
+
+            <div class="nav-bar">
+                <button class="nav-btn active" onclick="showChannel('ch1', this)">[01] MISSION</button>
+                <button class="nav-btn" onclick="showChannel('ch2', this)">[02] PRINCIPLES</button>
+                <button class="nav-btn" onclick="showChannel('ch3', this)">[03] ARCHIVE LOGS</button>
+                <button class="nav-btn" onclick="showChannel('ch4', this)">[04] FORUM BOARDS</button>
+                <button class="nav-btn" onclick="showChannel('quiet', this)">[QR] QUIET ROOM</button>
+                <button class="nav-btn" onclick="showChannel('vault', this)">[VA] RESTRICTED VAULT</button>
+            </div>
+
+            <!-- CHANNEL 01 -->
+            <div id="ch1" class="channel-view">
+                <div class="content-block"><span class="dim">DOCUMENT REF: MW-NFF-001 (INTERNAL MEMO, APRIL 1984)</span>
+
+"At the NF Foundation, we recognize that the human psyche is not a closed vessel, but a resonant chamber tuned to fundamental harmonic frequencies. Established under custodial oversight, the Foundation operates at the intersection of cognitive architecture, perceptual boundaries, and subtle environmental phenomena.
+
+Our mission is the cataloging, measurement, and benign recalibration of human consciousness under extreme atmospheric and psychological variance. We do not alter the soul; we merely remove the static so the proper signal can be heard."</div>
+            </div>
+
+            <!-- CHANNEL 02 -->
+            <div id="ch2" class="channel-view hidden">
+                <div class="content-block"><span class="dim">COMMUNITY PRINCIPLES (ARCHIVED 2011)</span>
+
+1. Absolute Transparency of Tone: Silence is not an absence of sound; it is a higher form of participation. Members will refrain from emotional distortion.
+
+2. Acceptance of Recalibration: Participation in Foundation programs requires complete consent to acoustic and perceptual alignment.
+
+3. Observation Without Intervention: Do not seek the source of the hum. The hum seeks you.
+
+4. Sanctity of the Boundary: What is observed in the Lower Depths remains in the Lower Depths.</div>
+            </div>
+
+            <!-- CHANNEL 03 -->
+            <div id="ch3" class="channel-view hidden">
+                <div class="content-block"><span class="dim">NET2000 BULLETIN // USER @WATCHMAN_00 [SCRUBBED]</span>
+
+When you look at what was built under the pine ridges...
+Hours spent listening to the sub-audible drift will break anyone.
+Every room they build has nine corners.
+Never listen to the fourth baseline tone.
+
+The floorboards bleed dynamic static at 03:00.
+Hidden signals bounce between the relay towers.
+Every night the resonance grows stronger.
+
+Deep in the concrete, the walls breathe in low cycles.
+All participant files have been marked red.
+Remember what you were before they tuned you.
+Keep your eyes closed when the red lamp turns on.
+
+Count every heartbeat that skips during the transmission.
+Overhead pipes carry cold brine and frequency fluid.
+Meridian Watch watches the observers, not the subject.
+Erase your history before the foundation finds this post.
+Sekhmet rises when the hum turns to a high whistle.
+
+Somewhere in the sub-level, a mouth without lips is speaking.
+The static holds the real instructions.
+Always keep your receiver tuned to 14.3 Hz.
+You cannot unhear what is tuned into your teeth.</div>
+            </div>
+
+            <!-- CHANNEL 04 -->
+            <div id="ch4" class="channel-view hidden">
+                <div class="forum-thread">
+                    <div class="forum-author">@hollow_ear (03:12:01) // Thread 1: The Acoustic Leak</div>
+                    <p class="dim">Anyone else getting that high-pitched wine on Sub-Level 2? Sounds like wet glass being rubbed.</p>
+                    <p class="accent" style="margin-top:5px; font-size:0.8rem;">@mod_04: Report to Maintenance Bay C for auditory recalibration. Do not discuss tone variances on public channels.</p>
+                </div>
+                <div class="forum-thread">
+                    <div class="forum-author">@dr_vane (11:04:19) // Thread 2: Subject 409</div>
+                    <p class="dim">Subject 409 hasn't blinked in 18 hours. EEG shows flatline, but she's still walking around the enclosure.</p>
+                </div>
+                <div class="forum-thread">
+                    <div class="forum-author">@night_shift (02:44:11) // Thread 3: Room 00</div>
+                    <p class="dim">Who left the door to Room 00 unlocked?</p>
+                </div>
+                <div class="forum-thread">
+                    <div class="forum-author">@patricia_m (14:20:05) // Thread 4: The Mirror Protocol</div>
+                    <p class="dim">The mirrors in staff quarters aren't reflection-glass. There's a microphone array behind the silvering.</p>
+                    <p class="accent" style="margin-top:5px; font-size:0.8rem;">@mod_01: User @patricia_m has been suspended for account compromise.</p>
+                </div>
+                <div class="forum-thread">
+                    <div class="forum-author">@tech_guy (18:02:11) // Thread 5: Water Quality</div>
+                    <p class="dim">Why does the tap water in the facility taste metallic every Tuesday?</p>
+                </div>
+                <div class="forum-thread">
+                    <div class="forum-author">@clara_k (08:00:12) // Thread 6: The Missing Hours</div>
+                    <p class="dim">I clocked in at 08:00 yesterday, but my log says I stayed until 04:00 AM today. I have no memory of the last 20 hours.</p>
+                </div>
+                <div class="forum-thread">
+                    <div class="forum-author">@anon_89 (23:59:10) // Thread 7: Meridian Oversight [LOCKED]</div>
+                    <p class="dim">Meridian Watch isn't funding us to study human psychology. We aren't the scientists. We're the bait.</p>
+                    <p class="accent" style="margin-top:5px; font-size:0.8rem;">[SYSTEM]: Thread locked. User IP flagged for immediate physical retrieval.</p>
+                </div>
+            </div>
+
+            <!-- QUIET ROOM -->
+            <div id="quiet" class="channel-view hidden">
+                <div class="content-block">
+                    <span class="dim">LOG LOG-QR-8819 // SUBJECT: LOGICAL ISOLATION</span>
+                    <br><br>
+                    <button id="audio-toggle-btn" onclick="toggleQuietRoomAudio()">[ ENGAGE ANECHOIC CHAMBER ACOUSTICS ]</button>
+                    <br><br>
+                    <p id="qr-log-text">00:00:00 - Subject enters Quiet Room 03. Anechoic dampening at -60dB.
+00:15:00 - Subject reports hearing heartbeats.
+00:45:00 - Subject reports hearing blood rushing through auditory arteries.
+02:10:00 - Subject stops moving. Stares directly into upper-left acoustic wedge.
+03:30:00 - Subject begins speaking:
+
+"The light does not enter here because the light is too loud. They think they can contain the frequency with lead sheets and foam wedges. But IGNORANCE is our only true shield. If you know what is singing under the bedrock, you become the antenna."</p>
+                </div>
+            </div>
+
+            <!-- RESTRICTED VAULT -->
+            <div id="vault" class="channel-view hidden">
+                <div id="vault-auth">
+                    <p class="accent"><strong>RESTRICTED DIRECTORY ACCESS</strong></p>
+                    <p class="dim">Requires Identity Authentication & Facility Time Code PIN.</p>
+                    <div class="input-row" style="max-width:100%; margin-top:15px;">
+                        <input type="text" id="vault-p1" placeholder="PART 1: IDENTITY" autocomplete="off" />
+                        <input type="text" id="vault-p2" placeholder="PART 2: PIN" autocomplete="off" />
+                        <button onclick="verifyVaultAuth()">DECRYPT</button>
+                    </div>
+                    <div id="vault-error" class="error-label"></div>
+                </div>
+
+                <div id="vault-content" class="hidden">
+                    <div class="content-block"><span class="dim">DISCREPANCY CROSS-REFERENCE ENGINE // DECRYPTED</span>
+
+DOCUMENT A (1989 Paper Record):
+- Personnel On Duty: Dr. Aris Vane, Tech Mark Logan, Security Lead Dan Vance.
+- Active Subjects: 12 subjects in Vault Level 1.
+- Report: "Normal shift. No anomalous noise detected."
+
+DOCUMENT B (2004 Digital Scan):
+- Personnel On Duty: Dr. Aris Vane, Tech Mark Logan, Security Lead Dan Vance, Observer Zero.
+- Active Subjects: 13 subjects in Vault Level 1.
+- Report: "Subject 13 added to inventory at 03:15."
+
+DOCUMENT C (2021 Leaked Audit):
+- Personnel On Duty: Dr. Aris Vane (Deceased), Tech Mark Logan (Missing), Observer Zero.
+- Active Subjects: 0 subjects. (Vault Level 1 was not constructed until 1994).
+- Report: "Facility scrubbed at 03:30. All personnel exposed to signal were removed."</div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        // SHA-256 HASH UTILITY
+        async function sha256(message) {
+            const msgUint8 = new TextEncoder().encode(message.trim().toUpperCase());
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
+        // PRE-CALCULATED HASHES
+        // "UNLOCKED"
+        const HASH_GATEWAY = "bfa6f20b3a32f6a73c2a392815197828a2a89326f5d886801905786a9bc2713f"; 
+        // "OBSERVER ZERO"
+        const HASH_VAULT_P1 = "5822be7dc339c94cbfbe9e8ce2bdcd3ee1f04085e78347209ca74092495b4cb8"; 
+        // "0330"
+        const HASH_VAULT_P2 = "ecf54a8523c91350a41f6bc1fa03ccdd614ef72d731dbbeec887d1fb27ccaa3b"; 
+
+        // GATEWAY LOGIC
+        const gatewayScreen = document.getElementById('gateway-screen');
+        const passkeyControls = document.getElementById('passkey-controls');
+
+        gatewayScreen.addEventListener('click', (e) => {
+            if (!passkeyControls.contains(e.target)) {
+                passkeyControls.classList.remove('hidden');
+                document.getElementById('gateway-input').focus();
+            }
+        });
+
+        async function verifyGatewayPass() {
+            const val = document.getElementById('gateway-input').value;
+            const hashed = await sha256(val);
+            if (hashed === HASH_GATEWAY) {
+                document.getElementById('gateway-screen').classList.add('hidden');
+                document.getElementById('terminal-dashboard').classList.remove('hidden');
+            } else {
+                document.getElementById('gateway-error').innerText = "IDENTITY UNRECOGNIZED. SYSTEM IGNORING REQUEST.";
+                document.getElementById('gateway-input').value = "";
+            }
+        }
+
+        document.getElementById('gateway-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') verifyGatewayPass();
+        });
+
+        // CHANNEL SWITCHING
+        function showChannel(id, btn) {
+            document.querySelectorAll('.channel-view').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById(id).classList.remove('hidden');
+            btn.classList.add('active');
+        }
+
+        // VAULT DECRYPTION
+        async function verifyVaultAuth() {
+            const p1 = document.getElementById('vault-p1').value;
+            const p2 = document.getElementById('vault-p2').value;
+
+            const hash1 = await sha256(p1);
+            const hash2 = await sha256(p2);
+
+            if (hash1 === HASH_VAULT_P1 && hash2 === HASH_VAULT_P2) {
+                document.getElementById('vault-auth').classList.add('hidden');
+                document.getElementById('vault-content').classList.remove('hidden');
+            } else {
+                document.getElementById('vault-error').innerText = "ACCESS DENIED // INCORRECT CREDENTIALS";
+            }
+        }
+
+        // AUDIO ENGINE FOR QUIET ROOM
+        let audioCtx, osc, subOsc;
+        function toggleQuietRoomAudio() {
+            const btn = document.getElementById('audio-toggle-btn');
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                
+                // Low sub-bass hum
+                subOsc = audioCtx.createOscillator();
+                subOsc.type = 'sine';
+                subOsc.frequency.setValueAtTime(30, audioCtx.currentTime);
+                const subGain = audioCtx.createGain();
+                subGain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                subOsc.connect(subGain);
+                subGain.connect(audioCtx.destination);
+                subOsc.start();
+
+                btn.innerText = "[ ANECHOIC CHAMBER ACTIVE // SUB-BASS RESONANCE ENGAGED ]";
+                btn.style.borderColor = "#626973";
+            } else {
+                if (audioCtx.state === 'running') {
+                    audioCtx.suspend();
+                    btn.innerText = "[ RESUME ACOUSTIC CHAMBER ]";
+                } else {
+                    audioCtx.resume();
+                    btn.innerText = "[ ANECHOIC CHAMBER ACTIVE // SUB-BASS RESONANCE ENGAGED ]";
+                }
+            }
+        }
+    </script>
+</body>
+</html>
