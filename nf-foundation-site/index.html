@@ -170,6 +170,11 @@
         .error-label { color: #888; font-size: 0.8rem; margin-top: 8px; }
         .accent { color: var(--text-white); }
         .dim { color: var(--text-dim); }
+        .vault-gate-box {
+            margin-top: 1.25rem;
+            border-top: 1px dashed var(--border-color);
+            padding-top: 1rem;
+        }
     </style>
 </head>
 <body>
@@ -324,7 +329,8 @@ You cannot unhear what is tuned into your teeth.</div>
                     <div id="vault-error" class="error-label"></div>
                 </div>
                 <div id="vault-content" class="hidden">
-                    <div class="content-block"><span class="dim">DISCREPANCY CROSS-REFERENCE ENGINE // DECRYPTED</span>
+                    <div class="content-block">
+                        <span class="dim">DISCREPANCY CROSS-REFERENCE ENGINE // DECRYPTED</span>
 DOCUMENT A (1989 Paper Record):
 - Personnel On Duty: Dr. Aris Vane, Tech Mark Logan, Security Lead Dan Vance.
 - Active Subjects: 12 subjects in Vault Level 1.
@@ -338,7 +344,61 @@ DOCUMENT C (2021 Leaked Audit):
 - Active Subjects: 0 subjects. (Vault Level 1 was not constructed until 1994).
 - Report: "Facility scrubbed at 03:30. All personnel exposed to signal were removed."
 
-<span class="dim" style="font-size:0.75rem; display:block; margin-top:1.5rem; border-top:1px solid #22262a; padding-top:0.75rem;">// XREF → <a href="https://docs.google.com/document/d/1jVw80_R77SRuha4BK_D-qeaVF4zRlTFRtAO7QhnCK_c/edit?usp=sharing" target="_blank" rel="noopener" style="color:#c5c9d0; text-decoration:underline; text-underline-offset:2px;">ext_doc_ref_1jVw80</a></span></div>
+<span class="dim" style="font-size:0.75rem; display:block; margin-top:1.5rem; border-top:1px solid #22262a; padding-top:0.75rem;">// XREF → <a href="https://docs.google.com/document/d/1jVw80_R77SRuha4BK_D-qeaVF4zRlTFRtAO7QhnCK_c/edit?usp=sharing" target="_blank" rel="noopener" style="color:#c5c9d0; text-decoration:underline; text-underline-offset:2px;">ext_doc_ref_1jVw80</a></span>
+
+                        <!-- VAULT SUB-GATES -->
+                        <div class="vault-gate-box">
+                            <p class="dim" style="font-size:0.8rem; margin-bottom:0.5rem;">[ GATE 01 // SUB-VAULT ACCESS ]</p>
+                            <div id="gate1-locked">
+                                <div class="input-row" style="max-width:100%; margin-top:0;">
+                                    <input type="text" id="gate1-input" placeholder="ENTER GATE 1 PASSPHRASE" autocomplete="off" />
+                                    <button type="button" onclick="verifyGate1()">UNLOCK GATE 1</button>
+                                </div>
+                                <div id="gate1-error" class="error-label"></div>
+                            </div>
+                            <div id="gate1-unlocked" class="hidden">
+                                <a href="https://docs.google.com/document/d/13j9yJiJfbfBMTr3HxGqJ5zJcoJqNewUV4463kyvvhWU/edit?usp=sharing" target="_blank" rel="noopener" style="text-decoration:none;">
+                                    <button type="button" style="width:100%; max-width:420px;">[ ACCESS GATE 1 REWARD DOCUMENT ]</button>
+                                </a>
+                                <p class="dim" style="font-size:0.7rem; margin-top:0.5rem;">// gate 1 cleared — document decrypted</p>
+                            </div>
+                        </div>
+
+                        <div class="vault-gate-box">
+                            <p class="dim" style="font-size:0.8rem; margin-bottom:0.5rem;">[ GATE 02 // PREPROD REPOSITORY ]</p>
+                            <div id="gate2-locked">
+                                <div class="input-row" style="max-width:100%; margin-top:0;">
+                                    <input type="text" id="gate2-input" placeholder="ENTER GATE 2 PASSPHRASE" autocomplete="off" />
+                                    <button type="button" onclick="verifyGate2()">UNLOCK GATE 2</button>
+                                </div>
+                                <div id="gate2-error" class="error-label"></div>
+                            </div>
+                            <div id="gate2-unlocked" class="hidden">
+                                <a href="https://docs.google.com/document/d/13j9yJiJfbfBMTr3HxGqJ5zJcoJqNewUV4463kyvvhWU/edit?usp=sharing" target="_blank" rel="noopener" style="text-decoration:none;">
+                                    <button type="button" style="width:100%; max-width:420px;">[ ACCESS GATE 2 REWARD DOCUMENT ]</button>
+                                </a>
+                                <p class="dim" style="font-size:0.7rem; margin-top:0.5rem;">// gate 2 cleared — document decrypted</p>
+                            </div>
+                        </div>
+
+                        <div class="vault-gate-box">
+                            <p class="dim" style="font-size:0.8rem; margin-bottom:0.5rem;">[ GATE 03 // THREAT MATRIX ARCHIVE ]</p>
+                            <div id="gate3-locked">
+                                <div class="input-row" style="max-width:100%; margin-top:0;">
+                                    <input type="text" id="gate3-input" placeholder="ENTER GATE 3 PASSPHRASE" autocomplete="off" />
+                                    <button type="button" onclick="verifyGate3()">UNLOCK GATE 3</button>
+                                </div>
+                                <div id="gate3-error" class="error-label"></div>
+                            </div>
+                            <div id="gate3-unlocked" class="hidden">
+                                <a href="https://docs.google.com/document/d/1oK1D3S6r6-TU6KhFMSmn81-wPVERFi24osI_xv0LGBM/edit?usp=sharing" target="_blank" rel="noopener" style="text-decoration:none;">
+                                    <button type="button" style="width:100%; max-width:420px;">[ ACCESS GATE 3 REWARD DOCUMENT ]</button>
+                                </a>
+                                <p class="dim" style="font-size:0.7rem; margin-top:0.5rem;">// gate 3 cleared — document decrypted</p>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
             </div>
         </div>
@@ -423,6 +483,14 @@ DOCUMENT C (2021 Leaked Audit):
         // "ARCHIVALKEY12"
         const HASH_ARCHIVAL = "1c5274a2839dfe6bdb1b6f54b1d0508bb194f48e8f9329bf63d2510016f5e6a2";
 
+        // VAULT GATES HASHES
+        // "ARCHIVE REFERENCE: IS-01 / EYE / 12"
+        const HASH_GATE1 = "54bf60f9e31d04bdc69c6cf8438bc863aeb7a7e800d3d5d762e5b8e967a5b3a6";
+        // "PREPROD"
+        const HASH_GATE2 = "dd03ef9745e998782ee418eb982ed3bc5f04a6e3556df2e737c1ccf074d445eb";
+        // "MRBOBBYBASSISATHREAT"
+        const HASH_GATE3 = "92fb4be9c6e39efd1ff5b839aa640702d7fe109c1fa1cfd9b9fb757879986bf5";
+
         // GATEWAY LOGIC
         const gatewayScreen = document.getElementById('gateway-screen');
         const passkeyControls = document.getElementById('passkey-controls');
@@ -477,6 +545,49 @@ DOCUMENT C (2021 Leaked Audit):
         });
         document.getElementById('vault-p2').addEventListener('keypress', (e) => {
             if (e.key === 'Enter') verifyVaultAuth();
+        });
+
+        // VAULT GATE VERIFICATIONS
+        function verifyGate1() {
+            const val = document.getElementById('gate1-input').value;
+            if (sha256(normalize(val)) === HASH_GATE1) {
+                document.getElementById('gate1-locked').classList.add('hidden');
+                document.getElementById('gate1-unlocked').classList.remove('hidden');
+            } else {
+                document.getElementById('gate1-error').innerText = "ACCESS DENIED // INCORRECT GATE 1 PASSPHRASE";
+                document.getElementById('gate1-input').value = "";
+            }
+        }
+        document.getElementById('gate1-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') verifyGate1();
+        });
+
+        function verifyGate2() {
+            const val = document.getElementById('gate2-input').value;
+            if (sha256(normalize(val)) === HASH_GATE2) {
+                document.getElementById('gate2-locked').classList.add('hidden');
+                document.getElementById('gate2-unlocked').classList.remove('hidden');
+            } else {
+                document.getElementById('gate2-error').innerText = "ACCESS DENIED // INCORRECT GATE 2 PASSPHRASE";
+                document.getElementById('gate2-input').value = "";
+            }
+        }
+        document.getElementById('gate2-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') verifyGate2();
+        });
+
+        function verifyGate3() {
+            const val = document.getElementById('gate3-input').value;
+            if (sha256(normalize(val)) === HASH_GATE3) {
+                document.getElementById('gate3-locked').classList.add('hidden');
+                document.getElementById('gate3-unlocked').classList.remove('hidden');
+            } else {
+                document.getElementById('gate3-error').innerText = "ACCESS DENIED // INCORRECT GATE 3 PASSPHRASE";
+                document.getElementById('gate3-input').value = "";
+            }
+        }
+        document.getElementById('gate3-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') verifyGate3();
         });
 
         // ARCHIVAL NOTE 2 (QUIET ROOM)
