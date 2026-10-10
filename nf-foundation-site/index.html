@@ -283,7 +283,9 @@ You cannot unhear what is tuned into your teeth.</div>
                     <span class="dim">LOG LOG-QR-8819 // SUBJECT: LOGICAL ISOLATION</span>
                     <br><br>
                     <button type="button" id="audio-toggle-btn" onclick="toggleQuietRoomAudio()">[ ENGAGE ANECHOIC CHAMBER ACOUSTICS ]</button>
-                    <br><br>
+                    <p class="dim" style="font-size:0.7rem; margin-top:0.4rem;" id="audio-status"></p>
+                    <audio id="quiet-room-audio" loop preload="auto" src="libets-delay.mp3"></audio>
+                    <br>
                     <p id="qr-log-text">00:00:00 - Subject enters Quiet Room 03. Anechoic dampening at -60dB.
 00:15:00 - Subject reports hearing heartbeats.
 00:45:00 - Subject reports hearing blood rushing through auditory arteries.
@@ -493,32 +495,44 @@ DOCUMENT C (2021 Leaked Audit):
             if (e.key === 'Enter') verifyArchivalKey();
         });
 
-        // AUDIO ENGINE FOR QUIET ROOM
-        let audioCtx, subOsc;
+        // QUIET ROOM AUDIO — The Caretaker: Libet's delay (local MP3, looping)
+        let quietAudioPlaying = false;
+
         function toggleQuietRoomAudio() {
             const btn = document.getElementById('audio-toggle-btn');
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                subOsc = audioCtx.createOscillator();
-                subOsc.type = 'sine';
-                subOsc.frequency.setValueAtTime(30, audioCtx.currentTime);
-                const subGain = audioCtx.createGain();
-                subGain.gain.setValueAtTime(0.15, audioCtx.currentTime);
-                subOsc.connect(subGain);
-                subGain.connect(audioCtx.destination);
-                subOsc.start();
-                btn.innerText = "[ ANECHOIC CHAMBER ACTIVE // SUB-BASS RESONANCE ENGAGED ]";
-                btn.style.borderColor = "#626973";
-            } else {
-                if (audioCtx.state === 'running') {
-                    audioCtx.suspend();
-                    btn.innerText = "[ RESUME ACOUSTIC CHAMBER ]";
+            const status = document.getElementById('audio-status');
+            const audio = document.getElementById('quiet-room-audio');
+
+            if (!quietAudioPlaying) {
+                audio.loop = true;
+                audio.currentTime = 0;
+                const playPromise = audio.play();
+                if (playPromise && playPromise.then) {
+                    playPromise.then(function () {
+                        quietAudioPlaying = true;
+                        btn.innerText = '[ ANECHOIC CHAMBER ACTIVE // LIBET\'S DELAY LOOPING ]';
+                        btn.style.borderColor = '#626973';
+                        if (status) status.textContent = '// The Caretaker — Libet\'s delay';
+                    }).catch(function (err) {
+                        if (status) status.textContent = '// playback blocked — click again or check file path';
+                        console.error(err);
+                    });
                 } else {
-                    audioCtx.resume();
-                    btn.innerText = "[ ANECHOIC CHAMBER ACTIVE // SUB-BASS RESONANCE ENGAGED ]";
+                    quietAudioPlaying = true;
+                    btn.innerText = '[ ANECHOIC CHAMBER ACTIVE // LIBET\'S DELAY LOOPING ]';
+                    btn.style.borderColor = '#626973';
+                    if (status) status.textContent = '// The Caretaker — Libet\'s delay';
                 }
+            } else {
+                audio.pause();
+                audio.currentTime = 0;
+                quietAudioPlaying = false;
+                btn.innerText = '[ ENGAGE ANECHOIC CHAMBER ACOUSTICS ]';
+                btn.style.borderColor = '';
+                if (status) status.textContent = '';
             }
         }
+
     </script>
 </body>
 </html>
