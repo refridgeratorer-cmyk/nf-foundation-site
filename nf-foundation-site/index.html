@@ -290,6 +290,23 @@ You cannot unhear what is tuned into your teeth.</div>
 02:10:00 - Subject stops moving. Stares directly into upper-left acoustic wedge.
 03:30:00 - Subject begins speaking:
 "The light does not enter here because the light is too loud. They think they can contain the frequency with lead sheets and foam wedges. But IGNORANCE is our only true shield. If you know what is singing under the bedrock, you become the antenna."</p>
+
+                    <div style="margin-top:1.75rem; border-top:1px solid var(--border-color); padding-top:1.25rem;">
+                        <p class="dim" style="font-size:0.8rem; margin-bottom:0.75rem;">ARCHIVAL NOTE 2 // ACCESS RESTRICTED</p>
+                        <div id="archival-locked">
+                            <div class="input-row" style="max-width:100%; margin-top:0;">
+                                <input type="text" id="archival-input" placeholder="ENTER ARCHIVAL KEY" autocomplete="off" />
+                                <button type="button" onclick="verifyArchivalKey()">UNLOCK</button>
+                            </div>
+                            <div id="archival-error" class="error-label"></div>
+                        </div>
+                        <div id="archival-unlocked" class="hidden">
+                            <a href="https://docs.google.com/document/d/16d4toO1GFZ4UYyxYIXZEfciNXjKKnlIjo24DQa8CwuQ/edit?usp=sharing" target="_blank" rel="noopener" style="text-decoration:none;">
+                                <button type="button" style="width:100%; max-width:420px;">[ ARCHIVAL NOTE 2 ]</button>
+                            </a>
+                            <p class="dim" style="font-size:0.7rem; margin-top:0.5rem;">// clearance granted — external document linked</p>
+                        </div>
+                    </div>
                 </div>
             </div>
             <!-- RESTRICTED VAULT -->
@@ -319,7 +336,7 @@ DOCUMENT C (2021 Leaked Audit):
 - Active Subjects: 0 subjects. (Vault Level 1 was not constructed until 1994).
 - Report: "Facility scrubbed at 03:30. All personnel exposed to signal were removed."
 
-<span class="dim" style="font-size:0.7rem; display:block; margin-top:1.25rem; opacity:0.55;">// XREF: <a href="https://docs.google.com/document/d/1jVw80_R77SRuha4BK_D-qeaVF4zRlTFRtAO7QhnCK_c/edit?usp=sharing" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline; text-underline-offset:2px;">ext_doc_ref_1jVw80</a></span></div>
+<span class="dim" style="font-size:0.75rem; display:block; margin-top:1.5rem; border-top:1px solid #22262a; padding-top:0.75rem;">// XREF → <a href="https://docs.google.com/document/d/1jVw80_R77SRuha4BK_D-qeaVF4zRlTFRtAO7QhnCK_c/edit?usp=sharing" target="_blank" rel="noopener" style="color:#c5c9d0; text-decoration:underline; text-underline-offset:2px;">ext_doc_ref_1jVw80</a></span></div>
                 </div>
             </div>
         </div>
@@ -401,6 +418,8 @@ DOCUMENT C (2021 Leaked Audit):
         const HASH_VAULT_P1 = "a9b3b1c871117825070f0d334eddad2bc12bcb618310c4e7193843717ea5c9cc";
         // "0330"
         const HASH_VAULT_P2 = "740448c2db4e24b63c3090e65bfdfbcfe870cb3bdc3da26981306effdd080616";
+        // "ARCHIVALKEY12"
+        const HASH_ARCHIVAL = "1c5274a2839dfe6bdb1b6f54b1d0508bb194f48e8f9329bf63d2510016f5e6a2";
 
         // GATEWAY LOGIC
         const gatewayScreen = document.getElementById('gateway-screen');
@@ -456,6 +475,22 @@ DOCUMENT C (2021 Leaked Audit):
         });
         document.getElementById('vault-p2').addEventListener('keypress', (e) => {
             if (e.key === 'Enter') verifyVaultAuth();
+        });
+
+        // ARCHIVAL NOTE 2 (QUIET ROOM)
+        function verifyArchivalKey() {
+            const val = document.getElementById('archival-input').value;
+            const hashed = sha256(normalize(val));
+            if (hashed === HASH_ARCHIVAL) {
+                document.getElementById('archival-locked').classList.add('hidden');
+                document.getElementById('archival-unlocked').classList.remove('hidden');
+            } else {
+                document.getElementById('archival-error').innerText = "KEY REJECTED // ARCHIVAL NOTE SEALED";
+                document.getElementById('archival-input').value = "";
+            }
+        }
+        document.getElementById('archival-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') verifyArchivalKey();
         });
 
         // AUDIO ENGINE FOR QUIET ROOM
